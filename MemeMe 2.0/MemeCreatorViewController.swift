@@ -97,8 +97,7 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     
     func unsubscribeFromKeyboardNotifications() {
         
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self)
     }
     
     @objc func keyboardWillShow(_ notification:Notification) {
@@ -161,16 +160,17 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     
     @IBAction func saveMeme(_ sender: Any) {
         if (topTextField.text != TOP_TEXT_PLACEHOLDER && bottomTextField.text != TOP_TEXT_PLACEHOLDER){
+            let memeViewController = self.storyboard!.instantiateViewController(withIdentifier: "MemeViewController") as! MemeViewController
             let memedImage = generateMemedImage()
             save(memedImage)
+            memeViewController.meme = currentMeme
+            
+            self.navigationController!.pushViewController(memeViewController, animated: true)
         }
-        
-        let memeViewController = self.storyboard!.instantiateViewController(withIdentifier: "MemeViewController") as! MemeViewController
-        
-        memeViewController.meme = currentMeme
-        
-        self.navigationController!.pushViewController(memeViewController, animated: true)
+
     }
+
+    
     
     
     // MARK: Modify Views Functions

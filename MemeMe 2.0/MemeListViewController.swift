@@ -8,12 +8,13 @@
 
 import UIKit
 
-class MemeListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
-    
+class MemeListViewController: UIViewController{
+
+    @IBOutlet weak var addMemeButton: UIBarButtonItem!
     @IBOutlet weak var memeTable: UITableView!
     
+    
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    //memes = appDelegate.memes
     
     var memes: [Meme] {
         return (UIApplication.shared.delegate as! AppDelegate).memes
@@ -27,8 +28,16 @@ class MemeListViewController: UIViewController, UITableViewDataSource, UITableVi
         print(self.memes)
     }
     
-    @IBOutlet weak var addMemeButton: UIBarButtonItem!
-    
+    @IBAction func segueForMemeEditor(_ sender: Any) {
+        let memeCreatorViewController = self.storyboard!.instantiateViewController(withIdentifier: "MemeCreatorViewController") as! MemeCreatorViewController
+        
+        memeCreatorViewController.editingCurrentMeme = false
+        
+        self.navigationController!.pushViewController(memeCreatorViewController, animated: true)
+    }
+}
+
+extension MemeListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -41,11 +50,11 @@ class MemeListViewController: UIViewController, UITableViewDataSource, UITableVi
         let memeCell = tableView.dequeueReusableCell(withIdentifier: "memeTableCell")  as! MemeListCell
         let meme = self.memes[(indexPath as NSIndexPath).row]
         print(meme)
-
+        
         memeCell.topMemeLabel?.text = meme.topText
         memeCell.bottonMemeLabel?.text = meme.bottomText
         memeCell.memeCellImageView?.image = meme.memedImage
-
+        
         return memeCell
     }
     
@@ -58,13 +67,5 @@ class MemeListViewController: UIViewController, UITableViewDataSource, UITableVi
         self.navigationController!.pushViewController(memeViewController, animated: true)
     }
 
-    @IBAction func segueForMemeEditor(_ sender: Any) {
-        let memeCreatorViewController = self.storyboard!.instantiateViewController(withIdentifier: "MemeCreatorViewController") as! MemeCreatorViewController
-        
-        memeCreatorViewController.editingCurrentMeme = false
-        
-        self.navigationController!.pushViewController(memeCreatorViewController, animated: true)
-    }
-    
 }
 

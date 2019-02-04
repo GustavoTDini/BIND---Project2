@@ -33,15 +33,29 @@ class MemeGridViewController: UICollectionViewController{
         super.viewDidLoad()
         let space: CGFloat = 1.0
         var dimension: CGFloat!
-        if (UIDevice.current.orientation == UIDeviceOrientation.portrait){
+        if UIDevice.current.orientation == UIDeviceOrientation.portrait {
            dimension = (min(view.frame.size.width, view.frame.size.height) - (2 * space)) / 2.0
-        } else if (UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight){
+        } else if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight{
             dimension = (min(view.frame.size.width, view.frame.size.height) - (2 * space)) / 3.0
         }
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
         flowLayout.itemSize = CGSize(width: dimension, height: dimension)
     }
+    
+    
+    
+    @IBAction func segueForMemeEditor(_ sender: Any) {
+        let memeCreatorViewController = self.storyboard!.instantiateViewController(withIdentifier: "MemeCreatorViewController") as! MemeCreatorViewController
+        
+        memeCreatorViewController.editingCurrentMeme = false
+        
+        self.navigationController!.pushViewController(memeCreatorViewController, animated: true)
+    }
+
+}
+
+extension MemeGridViewController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.memes.count
@@ -66,13 +80,5 @@ class MemeGridViewController: UICollectionViewController{
         self.navigationController!.pushViewController(memeViewController, animated: true)
     }
     
-    @IBAction func segueForMemeEditor(_ sender: Any) {
-        let memeCreatorViewController = self.storyboard!.instantiateViewController(withIdentifier: "MemeCreatorViewController") as! MemeCreatorViewController
-        
-        memeCreatorViewController.editingCurrentMeme = false
-        
-        self.navigationController!.pushViewController(memeCreatorViewController, animated: true)
-    }
-
 }
 

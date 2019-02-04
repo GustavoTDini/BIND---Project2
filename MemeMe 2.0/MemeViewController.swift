@@ -45,11 +45,14 @@ class MemeViewController: UIViewController {
     }
     
     @IBAction func shareMeme(_ sender: Any) {
-        let shareView = UIActivityViewController(activityItems: [meme], applicationActivities: [])
-        present(shareView, animated: true)
+        let memeImage = memeImageView.image!
+        let shareView = UIActivityViewController(activityItems: [memeImage], applicationActivities: [])
         shareView.completionWithItemsHandler = {(activity, completed, items, error) in
-            self.dismiss(animated: true, completion: nil)
+            if completed{
+                self.dismiss(animated: true, completion: nil)
+            }
         }
+        present(shareView, animated: true)
     }
     
     @IBAction func doneAndReturn(_ sender: Any) {
